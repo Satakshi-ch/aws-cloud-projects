@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AWS Cloud Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #232f3e;
+            border-bottom: 2px solid #ff9900;
+            padding-bottom: 10px;
+        }
+        .btn {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #ec8b00;
+        }
+        #responseMsg {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>My AWS Cloud Portfolio</h1>
+        <p>Welcome to my cloud portfolio! This website is hosted using AWS S3 and CloudFront, integrated with a serverless backend.</p>
+
+        <h3>Serverless API Demo (Phase 2)</h3>
+        <p>Click the button below to test live data fetching from AWS Lambda via API Gateway:</p>
+        
+        <button class="btn" id="apiBtn">Fetch Backend Message</button>
+        <div id="responseMsg"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://j2xdm4tr1i.execute-api.us-east-1.amazonaws.com/hello';
+
+        document.getElementById('apiBtn').addEventListener('click', () => {
+            const msgBox = document.getElementById('responseMsg');
+            msgBox.style.color = "#333";
+            msgBox.innerText = "Connecting to AWS Lambda...";
+
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    msgBox.style.color = "#2e7d32";
+                    msgBox.innerText = data.message;
+                })
+                .catch(error => {
+                    console.error('Error fetching API:', error);
+                    msgBox.style.color = "#d32f2f";
+                    msgBox.innerText = 'Failed to load backend response.';
+                });
+        });
+    </script>
+
+</body>
+</html>
