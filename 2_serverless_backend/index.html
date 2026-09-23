@@ -43,6 +43,14 @@
             font-weight: bold;
             color: #2e7d32;
         }
+        .visitor-counter {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +59,12 @@
         <h1>My AWS Cloud Portfolio</h1>
         <p>Welcome to my cloud portfolio! Hosted on Amazon S3 and CloudFront, integrated with a serverless backend.</p>
 
-        <h3>Serverless API Demo (Phase 2)</h3>
+        <!-- Phase 3: Live DynamoDB Visitor Counter -->
+        <div class="visitor-counter">
+            👀 Total Website Visitors: <span id="visitor-count">Loading...</span>
+        </div>
+
+        <h3>Serverless API Demo</h3>
         <p>Click the button below to test live data fetching from AWS Lambda via API Gateway:</p>
         
         <button class="btn" id="apiBtn">Fetch Backend Message</button>
@@ -59,8 +72,29 @@
     </div>
 
     <script>
+        // Tumhara exact API Gateway URL
         const API_URL = 'https://j2xdm4tr1i.execute-api.us-east-1.amazonaws.com/hello';
 
+        // 1. Page Load hote hi DynamoDB Visitor Count Fetch & Increment karega
+        window.addEventListener('DOMContentLoaded', () => {
+            const visitorBox = document.getElementById('visitor-count');
+            
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.views !== undefined) {
+                        visitorBox.innerText = data.views;
+                    } else {
+                        visitorBox.innerText = "1"; // Fallback view count
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching visitor count:', error);
+                    visitorBox.innerText = 'Error loading count';
+                });
+        });
+
+        // 2. Button Click Event Listener
         document.getElementById('apiBtn').addEventListener('click', () => {
             const msgBox = document.getElementById('responseMsg');
             msgBox.style.color = "#333";
@@ -70,7 +104,7 @@
                 .then(response => response.json())
                 .then(data => {
                     msgBox.style.color = "#2e7d32";
-                    msgBox.innerText = data.message;
+                    msgBox.innerText = data.message || `API Call Success! DynamoDB Views: ${data.views}`;
                 })
                 .catch(error => {
                     console.error('Error fetching API:', error);
