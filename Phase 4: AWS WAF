@@ -1,0 +1,8 @@
+## Phase 4: Perimeter & Edge Security (AWS WAF)
+
+Implemented application-layer security for the CloudFront distribution to protect against malicious traffic and automated attacks:
+
+- **Web ACL Deployment:** Created and associated a Web Access Control List (Web ACL) with the CloudFront distribution.
+- **Custom Rate Limiting:** Configured a rate-based rule (`LimitRequestsPerIP`) restricting client requests to **100 per 5-minute interval** to mitigate DDoS and brute-force attempts.
+- **AWS Managed Rule Groups:** Enabled `AWSManagedRulesAmazonIpReputationList` to automatically block requests from known malicious IP addresses based on AWS threat intelligence.
+- **OSI Layer 7 Security:** Ensured traffic filtering occurs at the application edge before hitting origin services.
